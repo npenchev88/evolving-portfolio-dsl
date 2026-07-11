@@ -555,3 +555,528 @@
        :population-score-standard-deviation
        (metrics/sample-standard-deviation
         candidate-scores)}})))
+
+;; ---------------------------------------------------------------------------
+;; Multi-generation outer genetic programming
+;; ---------------------------------------------------------------------------
+
+(def evolution-default-config
+  {:outer-population-size 12
+   :training-instance-count 3
+   :inner-evaluation-budget 150
+
+   :outer-generations 5
+   :outer-tournament-size 3
+   :elite-count 1
+
+   :max-offspring-attempts 10000})
+
+(defn- validate-evolution-config!
+  [{:keys [outer-population-size
+           outer-generations
+           outer-tournament-size
+           elite-count
+           max-offspring-attempts]
+    :as config}]
+
+  (when-not (and (integer? outer-generations)
+                 (not (neg? outer-generations)))
+    (throw
+     (ex-info
+      "Outer generation count must be a non-negative integer."
+      {:outer-generations outer-generations})))
+
+  (when-not (and (integer? outer-tournament-size)
+                 (pos? outer-tournament-size)
+                 (<= outer-tournament-size
+                     outer-population-size))
+    (throw
+     (ex-info
+      "Outer tournament size must be positive and no larger than the population."
+      {:outer-tournament-size outer-tournament-size
+       :outer-population-size outer-population-size})))
+
+  (when-not (and (integer? elite-count)
+                 (pos? elite-count)
+                 (< elite-count
+                    outer-population-size))
+    (throw
+     (ex-info
+      "Elite count must be positive and smaller than the outer population."
+      {:elite-count elite-count
+       :outer-population-size outer-population-size})))
+
+  (when-not (and (integer? max-offspring-attempts)
+                 (pos? max-offspring-attempts))
+    (throw
+     (ex-info
+      "Maximum offspring attempts must be positive."
+      {:max-offspring-attempts
+       max-offspring-attempts})))
+
+  config)
+
+(defn- better-ranked-candidate?
+  [candidate-a candidate-b]
+  (neg?
+   (compare
+    (candidate-sort-key candidate-a)
+    (candidate-sort-key candidate-b))))
+
+(defn- tournament-select-candidate
+  [random candidates tournament-size]
+  (loop [remaining tournament-size
+         winner nil]
+
+    (if (zero? remaining)
+      winner
+
+      (let [candidate
+            (nth candidates
+                 (rng/next-int
+                  random
+                  (count candidates)))
+
+            next-winner
+            (if (or (nil? winner)
+                    (better-ranked-candidate?
+                     candidate
+                     winner))
+              candidate
+              winner)]
+
+        (recur
+         (dec remaining)
+         next-winner)))))
+
+(defn- summarize-generation
+  [generation candidates generation-runtime-ms]
+  (let [best-candidate
+        (first candidates)
+
+        scores
+        (mapv :mean-normalized-score
+              candidates)]
+
+    {:generation
+     generation
+
+     :candidate-count
+     (count candidates)
+
+     :unique-program-count
+     (count
+      (distinct
+       (map :program
+            candidates)))
+
+     :best-candidate-id
+     (:candidate-id
+      best-candidate)
+
+     :best-fitness
+     (:fitness
+      best-candidate)
+
+     :best-mean-normalized-score
+     (:mean-normalized-score
+      best-candidate)
+
+     :best-minimum-normalized-score
+     (:minimum-normalized-score
+      best-candidate)
+
+     :best-mean-optimality-gap
+     (:mean-optimality-gap
+      best-candidate)
+
+     :best-program-node-count
+     (:program-node-count
+      best-candidate)
+
+     :best-program-depth
+     (:program-depth
+      best-candidate)
+
+     :best-program
+     (:program
+      best-candidate)
+
+     :population-mean-normalized-score
+     (metrics/mean
+      scores)
+
+     :population-score-standard-deviation
+     (metrics/sample-standard-deviation
+      scores)
+
+     :generation-runtime-ms
+     generation-runtime-ms}))
+
+(defn- evaluate-generation
+  [generation
+   candidate-specifications
+   training-suite
+   common-inner-seeds
+   config]
+
+  (let [started-at
+        (System/nanoTime)
+
+        evaluated-candidates
+        (mapv
+         (fn [candidate-id candidate-specification]
+           (let [evaluated
+                 (evaluate-candidate
+                  candidate-id
+                  (:program candidate-specification)
+                  training-suite
+                  common-inner-seeds
+                  config)]
+
+             (merge
+              evaluated
+
+              (dissoc
+               candidate-specification
+               :program)
+
+              {:generation
+               generation})))
+
+         (range)
+         candidate-specifications)
+
+        ranked-candidates
+        (rank-candidates
+         evaluated-candidates)
+
+        elapsed-nanoseconds
+        (- (System/nanoTime)
+           started-at)
+
+        generation-runtime-ms
+        (/ (double elapsed-nanoseconds)
+           1000000.0)]
+
+    {:generation
+     generation
+
+     :candidates
+     ranked-candidates
+
+     :summary
+     (summarize-generation
+      generation
+      ranked-candidates
+      generation-runtime-ms)}))
+
+(defn- next-generation-specifications
+  [random ranked-candidates config]
+  (let [{:keys [outer-population-size
+                outer-tournament-size
+                elite-count
+                max-offspring-attempts
+                generator-config]}
+        config
+
+        elites
+        (vec
+         (take elite-count
+               ranked-candidates))
+
+        elite-specifications
+        (mapv
+         (fn [elite]
+           {:program
+            (:program elite)
+
+            :origin
+            :elite
+
+            :parent-candidate-id
+            (:candidate-id elite)
+
+            :parent-rank
+            (:rank elite)})
+
+         elites)
+
+        initial-seen
+        (set
+         (map :program
+              elite-specifications))]
+
+    (loop [specifications
+           elite-specifications
+
+           seen
+           initial-seen
+
+           attempts
+           0]
+
+      (cond
+        (= (count specifications)
+           outer-population-size)
+        specifications
+
+        (>= attempts
+            max-offspring-attempts)
+        (throw
+         (ex-info
+          "Could not create enough unique offspring programs."
+          {:requested-population-size
+           outer-population-size
+
+           :generated
+           (count specifications)
+
+           :attempts
+           attempts}))
+
+        :else
+        (let [parent
+              (tournament-select-candidate
+               random
+               ranked-candidates
+               outer-tournament-size)
+
+              child-program
+              (generation/mutate
+               random
+               (:program parent)
+               generator-config)]
+
+          (if (contains?
+               seen
+               child-program)
+
+            (recur
+             specifications
+             seen
+             (inc attempts))
+
+            (recur
+             (conj
+              specifications
+              {:program
+               child-program
+
+               :origin
+               :mutation
+
+               :parent-candidate-id
+               (:candidate-id parent)
+
+               :parent-rank
+               (:rank parent)})
+
+             (conj seen
+                   child-program)
+
+             (inc attempts))))))))
+
+(defn evolve
+  "Runs mutation-only outer genetic programming.
+
+  Generation zero contains randomly generated optimizer programs.
+  Subsequent generations use tournament selection, type-preserving subtree
+  mutation and elitism.
+
+  All candidates across all generations are evaluated on the same training
+  instances, using the same common inner seeds and inner evaluation budget.
+
+  Held-out test instances are never used."
+  ([master-seed]
+   (evolve
+    master-seed
+    {}))
+
+  ([master-seed config-overrides]
+   (let [started-at
+         (System/nanoTime)
+
+         config
+         (-> (merge
+              default-config
+              evolution-default-config
+              config-overrides)
+
+             validate-config!
+             validate-evolution-config!)
+
+         {:keys [outer-generations
+                 training-instance-count]}
+         config
+
+         initial-result
+         (evaluate-initial-population
+          master-seed
+          config)
+
+         dataset
+         (synthetic-data/generate-dataset
+          (:dataset-config
+           config))
+
+         training-suite
+         (prepare-training-suite
+          dataset
+          training-instance-count)
+
+         common-inner-seeds
+         (:common-inner-seeds
+          initial-result)
+
+         outer-evolution-seed
+         (rng/derive-seed
+          master-seed
+          910000)
+
+         outer-random
+         (rng/create
+          outer-evolution-seed)
+
+         initial-candidates
+         (mapv
+          (fn [candidate]
+            (assoc
+             candidate
+
+             :generation
+             0
+
+             :origin
+             :initial
+
+             :parent-candidate-id
+             nil
+
+             :parent-rank
+             nil))
+
+          (:candidates
+           initial-result))
+
+         initial-generation
+         {:generation
+          0
+
+          :candidates
+          initial-candidates
+
+          :summary
+          (summarize-generation
+           0
+           initial-candidates
+           (:outer-runtime-ms
+            initial-result))}]
+
+     (loop [current-generation
+            0
+
+            current-candidates
+            initial-candidates
+
+            generation-records
+            [initial-generation]]
+
+       (if (= current-generation
+              outer-generations)
+
+         (let [elapsed-nanoseconds
+               (- (System/nanoTime)
+                  started-at)
+
+               final-candidates
+               current-candidates
+
+               best-candidate
+               (first
+                final-candidates)]
+
+           {:experiment
+            :outer-gp-evolution
+
+            :master-seed
+            master-seed
+
+            :program-generation-seed
+            (:program-generation-seed
+             initial-result)
+
+            :outer-evolution-seed
+            outer-evolution-seed
+
+            :config
+            config
+
+            :data-config
+            (:config dataset)
+
+            :training-instance-ids
+            (mapv :instance-id
+                  training-suite)
+
+            :training-instance-count-used
+            training-instance-count
+
+            :test-instance-count-generated
+            (count
+             (:test dataset))
+
+            :test-instances-used
+            0
+
+            :common-inner-seeds
+            common-inner-seeds
+
+            :generation-count
+            outer-generations
+
+            :generations
+            generation-records
+
+            :history
+            (mapv :summary
+                  generation-records)
+
+            :final-candidates
+            final-candidates
+
+            :best-candidate
+            best-candidate
+
+            :outer-runtime-ms
+            (/ (double elapsed-nanoseconds)
+               1000000.0)})
+
+         (let [next-generation
+               (inc
+                current-generation)
+
+               candidate-specifications
+               (next-generation-specifications
+                outer-random
+                current-candidates
+                config)
+
+               evaluated-generation
+               (evaluate-generation
+                next-generation
+                candidate-specifications
+                training-suite
+                common-inner-seeds
+                config)
+
+               next-candidates
+               (:candidates
+                evaluated-generation)]
+
+           (recur
+            next-generation
+            next-candidates
+            (conj
+             generation-records
+             evaluated-generation))))))))

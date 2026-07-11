@@ -8,6 +8,7 @@
    [portfolio-evolution.knapsack-test]
    [portfolio-evolution.metrics-test]
    [portfolio-evolution.optimizer-runtime-test]
+   [portfolio-evolution.outer-evolution-test]
    [portfolio-evolution.outer-gp-test]
    [portfolio-evolution.program-generation-test]
    [portfolio-evolution.synthetic-data-test]))
@@ -25,7 +26,8 @@
          'portfolio-evolution.dsl-test
          'portfolio-evolution.optimizer-runtime-test
          'portfolio-evolution.program-generation-test
-         'portfolio-evolution.outer-gp-test)]
+         'portfolio-evolution.outer-gp-test
+         'portfolio-evolution.outer-evolution-test)]
 
     (shutdown-agents)
 
