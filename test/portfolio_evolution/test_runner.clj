@@ -1,13 +1,21 @@
 (ns portfolio-evolution.test-runner
   (:require
    [clojure.test :as test]
-   [portfolio-evolution.core-test]))
+   [portfolio-evolution.core-test]
+   [portfolio-evolution.knapsack-test]
+   [portfolio-evolution.metrics-test]
+   [portfolio-evolution.synthetic-data-test]))
 
 (defn -main
   [& _]
   (let [{:keys [fail error]}
         (test/run-tests
-         'portfolio-evolution.core-test)]
+         'portfolio-evolution.core-test
+         'portfolio-evolution.knapsack-test
+         'portfolio-evolution.metrics-test
+         'portfolio-evolution.synthetic-data-test)]
+
     (shutdown-agents)
+
     (when (pos? (+ fail error))
       (System/exit 1))))
