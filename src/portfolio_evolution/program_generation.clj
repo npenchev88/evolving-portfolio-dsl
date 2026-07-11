@@ -27,7 +27,7 @@
 (def scorer-terminals
   ['expected-profit
    'return-per-cost
-   'negative-cost])
+   'cost])
 
 (def repair-strategies
   ['ratio-repair

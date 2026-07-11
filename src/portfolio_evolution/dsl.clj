@@ -3,7 +3,7 @@
 (def terminal-types
   {'expected-profit       :asset-scorer
    'return-per-cost       :asset-scorer
-   'negative-cost         :asset-scorer
+   'cost         :asset-scorer
 
    'ratio-repair          :repair-strategy
    'random-removal-repair :repair-strategy})

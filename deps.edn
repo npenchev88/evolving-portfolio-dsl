@@ -17,6 +17,10 @@
   {:main-opts
    ["-m" "portfolio-evolution.generation-demo"]}
 
+  :outer-demo
+  {:main-opts
+   ["-m" "portfolio-evolution.outer-population-demo"]}
+
   :test
   {:extra-paths ["test"]
    :main-opts

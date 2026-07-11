@@ -85,7 +85,7 @@
             '(-
                expected-profit
                (* 0.2
-                  negative-cost)))))))
+                  cost)))))))
 
 (deftest structural-metrics-are-available
   (testing "Program size and depth are measurable"

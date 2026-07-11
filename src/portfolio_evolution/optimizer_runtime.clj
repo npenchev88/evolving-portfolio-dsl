@@ -27,9 +27,9 @@
        (double
         (:cost asset)))
 
-    (= scorer 'negative-cost)
-    (- (double
-        (:cost asset)))
+    (= scorer 'cost)
+    (double
+     (:cost asset))
 
     (seq? scorer)
     (let [[operator & arguments]
