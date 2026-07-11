@@ -8,6 +8,16 @@
   [seed]
   (SplittableRandom. (long seed)))
 
+(defn derive-seed
+  "Derives a deterministic seed for a particular random stream.
+
+  Later, the baseline and evolved optimizer will receive the same derived
+  seed for the same master seed and problem instance."
+  [master-seed stream-id]
+  (+ (* 1000003 (long master-seed))
+     (* 9176 (long stream-id))
+     97))
+
 (defn next-int
   "Returns an integer in [0, upper-exclusive)."
   [^SplittableRandom random upper-exclusive]
