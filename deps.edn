@@ -1,12 +1,19 @@
 {:paths ["src" "resources"]
 
  :deps
- {org.clojure/clojure {:mvn/version "1.12.5"}}
+ {org.clojure/clojure
+  {:mvn/version "1.12.5"}}
 
  :aliases
  {:run
-  {:main-opts ["-m" "portfolio-evolution.core"]}
+  {:main-opts
+   ["-m" "portfolio-evolution.core"]}
+
+  :dsl-demo
+  {:main-opts
+   ["-m" "portfolio-evolution.dsl-demo"]}
 
   :test
   {:extra-paths ["test"]
-   :main-opts ["-m" "portfolio-evolution.test-runner"]}}}
+   :main-opts
+   ["-m" "portfolio-evolution.test-runner"]}}}
