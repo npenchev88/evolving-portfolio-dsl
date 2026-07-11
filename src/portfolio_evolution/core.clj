@@ -1,5 +1,6 @@
 (ns portfolio-evolution.core
   (:require
+   [portfolio-evolution.baseline-ga :as baseline-ga]
    [portfolio-evolution.knapsack :as knapsack]
    [portfolio-evolution.metrics :as metrics]
    [portfolio-evolution.synthetic-data :as synthetic-data])
@@ -22,7 +23,9 @@
     (if (empty? remaining)
       config
 
-      (let [[flag value & more] remaining]
+      (let [[flag value & more]
+            remaining]
+
         (case flag
           "--seed"
           (do
@@ -31,10 +34,11 @@
                (ex-info "--seed requires an integer value."
                         {:arguments args})))
 
-            (recur more
-                   (assoc config
-                          :seed
-                          (parse-long-argument value))))
+            (recur
+             more
+             (assoc config
+                    :seed
+                    (parse-long-argument value))))
 
           (throw
            (ex-info "Unknown command-line argument."
@@ -49,42 +53,71 @@
         dataset
         (synthetic-data/generate-dataset)
 
-        first-training-instance
-        (first (:train dataset))
+        test-instance
+        (first (:test dataset))
 
         exact-result
-        (knapsack/exact-solve first-training-instance)
+        (knapsack/exact-solve
+         test-instance)
 
-        exact-metrics
+        baseline-result
+        (baseline-ga/run
+         test-instance
+         seed)
+
+        result-metrics
         (metrics/score
-         (:objective exact-result)
+         (:best-objective baseline-result)
          (:optimal-objective exact-result))]
 
     (println "Evolving Portfolio DSL")
-    (println "Clojure version:" (clojure-version))
     (println "Algorithm seed:" seed)
     (println)
 
-    (println "Dataset")
-    (println "  Training instances:" (count (:train dataset)))
-    (println "  Test instances:" (count (:test dataset)))
-    (println "  Assets per instance:"
-             (count (:assets first-training-instance)))
-    (println "  Train data seed:"
-             (get-in dataset [:config :train-data-seed]))
-    (println "  Test data seed:"
-             (get-in dataset [:config :test-data-seed]))
+    (println "Held-out test instance")
+    (println "  ID:" (:id test-instance))
+    (println "  Assets:" (count (:assets test-instance)))
+    (println "  Budget:" (:budget test-instance))
     (println)
 
-    (println "First training instance")
-    (println "  ID:" (:id first-training-instance))
-    (println "  Budget:" (:budget first-training-instance))
-    (println "  Exact objective:" (:objective exact-result))
+    (println "Exact DP oracle")
+    (println "  Optimal objective:"
+             (:optimal-objective exact-result))
     (println "  Selected assets:"
              (:selected-asset-count exact-result))
-    (println "  Used capital:" (:cost exact-result))
-    (println "  Feasible:" (:feasible? exact-result))
+    (println)
+
+    (println "Baseline GA")
+    (println "  Best objective:"
+             (:best-objective baseline-result))
+    (println "  Used capital:"
+             (:best-cost baseline-result))
+    (println "  Selected assets:"
+             (:selected-asset-count baseline-result))
+    (println "  Feasible:"
+             (:feasible? baseline-result))
+    (println "  Evaluations:"
+             (:fitness-evaluations-used
+              baseline-result))
+    (println "  Best first found at evaluation:"
+             (:best-found-at-evaluation
+              baseline-result))
+    (println "  Runtime ms:"
+             (format "%.3f"
+                     (:runtime-ms baseline-result)))
+    (println "  Raw feasibility rate:"
+             (format "%.4f"
+                     (:raw-feasibility-rate
+                      baseline-result)))
+    (println "  Post-repair feasibility rate:"
+             (format "%.4f"
+                     (:feasibility-rate
+                      baseline-result)))
     (println "  Normalized score:"
-             (:normalized-score exact-metrics))
+             (format "%.6f"
+                     (:normalized-score
+                      result-metrics)))
     (println "  Optimality gap:"
-             (:optimality-gap exact-metrics))))
+             (format "%.6f"
+                     (:optimality-gap
+                      result-metrics)))))
