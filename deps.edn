@@ -13,6 +13,10 @@
   {:main-opts
    ["-m" "portfolio-evolution.dsl-demo"]}
 
+  :generation-demo
+  {:main-opts
+   ["-m" "portfolio-evolution.generation-demo"]}
+
   :test
   {:extra-paths ["test"]
    :main-opts

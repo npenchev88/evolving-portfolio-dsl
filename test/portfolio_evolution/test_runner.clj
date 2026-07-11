@@ -8,6 +8,7 @@
    [portfolio-evolution.knapsack-test]
    [portfolio-evolution.metrics-test]
    [portfolio-evolution.optimizer-runtime-test]
+   [portfolio-evolution.program-generation-test]
    [portfolio-evolution.synthetic-data-test]))
 
 (defn -main
@@ -21,7 +22,8 @@
          'portfolio-evolution.baseline-ga-test
          'portfolio-evolution.experiment-test
          'portfolio-evolution.dsl-test
-         'portfolio-evolution.optimizer-runtime-test)]
+         'portfolio-evolution.optimizer-runtime-test
+         'portfolio-evolution.program-generation-test)]
 
     (shutdown-agents)
 
