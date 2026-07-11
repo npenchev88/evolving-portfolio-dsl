@@ -1,0 +1,16 @@
+.cpcache/
+.clj-kondo/
+.lsp/
+.nrepl-port
+.calva/
+.idea/
+.vscode/
+target/
+classes/
+*.class
+*.jar
+*.log
+
+results/*.csv
+results/*.edn
+!results/.gitkeep
