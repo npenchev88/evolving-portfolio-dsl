@@ -1,0 +1,3 @@
+seed,initial-fitness,final-fitness,fitness-improvement,initial-training-score,final-training-score,training-score-improvement,initial-nodes,final-nodes,node-reduction,initial-depth,final-depth,depth-reduction,outer-runtime-ms
+1,0.987787857883276,0.9887878578832761,0.0010000000000000009,0.995287857883276,0.995287857883276,0.0,15,13,2,5,4,1,39463.435106
+2,0.98797747409543,0.9891599509065317,0.0011824768111017292,0.99547747409543,0.9961599509065318,6.824768111017843E-4,15,14,1,5,5,0,46404.534472

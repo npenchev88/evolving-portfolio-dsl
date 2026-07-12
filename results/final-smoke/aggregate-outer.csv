@@ -1,0 +1,2 @@
+seed-count,fitness-improvement-mean,fitness-improvement-ci95-lower,fitness-improvement-ci95-upper,training-score-improvement-mean,training-score-improvement-ci95-lower,training-score-improvement-ci95-upper,node-reduction-mean,node-reduction-ci95-lower,node-reduction-ci95-upper,depth-reduction-mean,depth-reduction-ci95-lower,depth-reduction-ci95-upper
+2,0.001091238405550865,-6.805545518055712E-5,0.0022505322662822874,3.4123840555089213E-4,-0.003994606639224571,0.0046770834503263555,1.5,-4.853102368087373,7.853102368087373,0.5,-5.853102368087373,6.853102368087373

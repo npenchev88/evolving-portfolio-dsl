@@ -33,3 +33,54 @@
      (approximately=
       (/ 60.0 220.0)
       (metrics/optimality-gap 160 220)))))
+
+(deftest confidence-interval-with-one-observation-test
+  (testing "A confidence interval is not fabricated for n=1"
+    (let [result
+          (metrics/confidence-interval-95
+           [0.95])]
+
+      (is (= 1
+             (:n result)))
+
+      (is
+       (approximately=
+        0.95
+        (:mean result)))
+
+      (is (nil?
+           (:ci95-lower
+            result)))
+
+      (is (nil?
+           (:ci95-upper
+            result))))))
+
+(deftest confidence-interval-for-constant-values-test
+  (testing "A constant sample has zero-width confidence interval"
+    (let [result
+          (metrics/confidence-interval-95
+           [0.9 0.9 0.9 0.9])]
+
+      (is
+       (approximately=
+        0.9
+        (:mean result)))
+
+      (is
+       (approximately=
+        0.0
+        (:sample-standard-deviation
+         result)))
+
+      (is
+       (approximately=
+        0.9
+        (:ci95-lower
+         result)))
+
+      (is
+       (approximately=
+        0.9
+        (:ci95-upper
+         result))))))

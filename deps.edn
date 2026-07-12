@@ -2,7 +2,10 @@
 
  :deps
  {org.clojure/clojure
-  {:mvn/version "1.12.5"}}
+  {:mvn/version "1.12.5"}
+
+  org.apache.commons/commons-math3
+  {:mvn/version "3.6.1"}}
 
  :aliases
  {:run
@@ -32,6 +35,10 @@
   :scale-evaluate-demo
   {:main-opts
    ["-m" "portfolio-evolution.scale-evaluation-demo"]}
+
+  :final-experiment
+  {:main-opts
+   ["-m" "portfolio-evolution.final-experiment-demo"]}
 
   :test
   {:extra-paths ["test"]

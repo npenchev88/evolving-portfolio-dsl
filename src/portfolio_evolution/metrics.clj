@@ -1,4 +1,6 @@
-(ns portfolio-evolution.metrics)
+(ns portfolio-evolution.metrics
+  (:import
+   [org.apache.commons.math3.distribution TDistribution]))
 
 (defn normalized-score
   "Returns obtained / optimal.
@@ -168,3 +170,106 @@
      :all-final-solutions-feasible?
      (every? :feasible?
              instance-results)}))
+
+(defn confidence-interval-95
+  "Calculates a two-sided 95% Student-t confidence interval.
+
+  For n=1, the mean is returned, but the confidence interval is not
+  estimable and its bounds are nil."
+  [values]
+  (let [values
+        (mapv double
+              values)
+
+        observation-count
+        (count values)]
+
+    (when (zero?
+           observation-count)
+      (throw
+       (ex-info
+        "Cannot calculate a confidence interval over an empty collection."
+        {})))
+
+    (let [average
+          (mean values)
+
+          standard-deviation
+          (sample-standard-deviation
+           values)]
+
+      (if (= observation-count
+             1)
+
+        {:n
+         observation-count
+
+         :mean
+         average
+
+         :sample-standard-deviation
+         standard-deviation
+
+         :standard-error
+         nil
+
+         :critical-t
+         nil
+
+         :ci95-half-width
+         nil
+
+         :ci95-lower
+         nil
+
+         :ci95-upper
+         nil}
+
+        (let [degrees-of-freedom
+              (dec observation-count)
+
+              distribution
+              (TDistribution.
+               (double
+                degrees-of-freedom))
+
+              critical-t
+              (.inverseCumulativeProbability
+               distribution
+               0.975)
+
+              standard-error
+              (/ standard-deviation
+                 (Math/sqrt
+                  (double
+                   observation-count)))
+
+              half-width
+              (* critical-t
+                 standard-error)]
+
+          {:n
+           observation-count
+
+           :mean
+           average
+
+           :sample-standard-deviation
+           standard-deviation
+
+           :standard-error
+           standard-error
+
+           :critical-t
+           critical-t
+
+           :ci95-half-width
+           half-width
+
+           :ci95-lower
+           (- average
+              half-width)
+
+           :ci95-upper
+           (+ average
+              half-width)})))))
