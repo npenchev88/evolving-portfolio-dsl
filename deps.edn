@@ -25,6 +25,14 @@
   {:main-opts
    ["-m" "portfolio-evolution.evolution-demo"]}
 
+  :evaluate-demo
+  {:main-opts
+   ["-m" "portfolio-evolution.held-out-demo"]}
+
+  :scale-evaluate-demo
+  {:main-opts
+   ["-m" "portfolio-evolution.scale-evaluation-demo"]}
+
   :test
   {:extra-paths ["test"]
    :main-opts

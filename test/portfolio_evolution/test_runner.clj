@@ -5,12 +5,15 @@
    [portfolio-evolution.core-test]
    [portfolio-evolution.dsl-test]
    [portfolio-evolution.experiment-test]
+   [portfolio-evolution.held-out-evaluation-test]
    [portfolio-evolution.knapsack-test]
    [portfolio-evolution.metrics-test]
    [portfolio-evolution.optimizer-runtime-test]
    [portfolio-evolution.outer-evolution-test]
    [portfolio-evolution.outer-gp-test]
    [portfolio-evolution.program-generation-test]
+   [portfolio-evolution.random-search-test]
+   [portfolio-evolution.scale-evaluation-test]
    [portfolio-evolution.synthetic-data-test]))
 
 (defn -main
@@ -22,12 +25,15 @@
          'portfolio-evolution.metrics-test
          'portfolio-evolution.synthetic-data-test
          'portfolio-evolution.baseline-ga-test
+         'portfolio-evolution.random-search-test
          'portfolio-evolution.experiment-test
          'portfolio-evolution.dsl-test
          'portfolio-evolution.optimizer-runtime-test
          'portfolio-evolution.program-generation-test
          'portfolio-evolution.outer-gp-test
-         'portfolio-evolution.outer-evolution-test)]
+         'portfolio-evolution.outer-evolution-test
+         'portfolio-evolution.held-out-evaluation-test
+         'portfolio-evolution.scale-evaluation-test)]
 
     (shutdown-agents)
 
