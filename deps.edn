@@ -40,6 +40,10 @@
   {:main-opts
    ["-m" "portfolio-evolution.final-experiment-demo"]}
 
+  :greedy-baseline
+  {:main-opts
+   ["-m" "portfolio-evolution.greedy-baseline-experiment"]}
+
   :test
   {:extra-paths ["test"]
    :main-opts

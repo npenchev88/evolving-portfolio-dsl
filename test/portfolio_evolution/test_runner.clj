@@ -6,6 +6,7 @@
    [portfolio-evolution.dsl-test]
    [portfolio-evolution.experiment-test]
    [portfolio-evolution.final-experiment-test]
+   [portfolio-evolution.greedy-baseline-test]
    [portfolio-evolution.held-out-evaluation-test]
    [portfolio-evolution.knapsack-test]
    [portfolio-evolution.metrics-test]
@@ -35,7 +36,8 @@
          'portfolio-evolution.outer-evolution-test
          'portfolio-evolution.held-out-evaluation-test
          'portfolio-evolution.scale-evaluation-test
-         'portfolio-evolution.final-experiment-test)]
+         'portfolio-evolution.final-experiment-test
+         'portfolio-evolution.greedy-baseline-test)]
 
     (shutdown-agents)
 
