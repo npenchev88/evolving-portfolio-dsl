@@ -1,0 +1,21 @@
+figure,title,description
+figure_01_quality_by_size.png,Solution quality by problem size,"Mean normalized score for Random Search, Standard GA, Greedy-only and Evolved DSL."
+figure_01_quality_by_size.pdf,Solution quality by problem size,"Mean normalized score for Random Search, Standard GA, Greedy-only and Evolved DSL."
+figure_02_optimality_gap_log.png,Optimality gap by problem size,Mean optimality gap on a logarithmic scale; lower is better.
+figure_02_optimality_gap_log.pdf,Optimality gap by problem size,Mean optimality gap on a logarithmic scale; lower is better.
+figure_03_deployment_runtime_log.png,Deployment runtime by problem size,Mean runtime on a logarithmic scale. Outer evolution cost is reported separately.
+figure_03_deployment_runtime_log.pdf,Deployment runtime by problem size,Mean runtime on a logarithmic scale. Outer evolution cost is reported separately.
+figure_04_quality_runtime_tradeoff.png,Quality-runtime trade-off,Mean normalized score against mean deployment runtime for each method and problem size.
+figure_04_quality_runtime_tradeoff.pdf,Quality-runtime trade-off,Mean normalized score against mean deployment runtime for each method and problem size.
+figure_05_outer_quality_changes.png,Outer-evolution quality changes,Seed-level fitness and training-score changes from generation 0 to the final selected program.
+figure_05_outer_quality_changes.pdf,Outer-evolution quality changes,Seed-level fitness and training-score changes from generation 0 to the final selected program.
+figure_06_program_node_reduction.png,Program-size change during outer evolution,Paired initial and final node counts for each master seed.
+figure_06_program_node_reduction.pdf,Program-size change during outer evolution,Paired initial and final node counts for each master seed.
+figure_07_program_depth_reduction.png,Program-depth change during outer evolution,Paired initial and final depths for each master seed.
+figure_07_program_depth_reduction.pdf,Program-depth change during outer evolution,Paired initial and final depths for each master seed.
+figure_08_ablation_by_size.png,Ablation results by problem size,"Full optimizer, no-greedy initializer, simple body and Greedy-only comparison."
+figure_08_ablation_by_size.pdf,Ablation results by problem size,"Full optimizer, no-greedy initializer, simple body and Greedy-only comparison."
+figure_09_evolved_minus_greedy.png,Marginal benefit over the greedy heuristic,Seed-level difference between Evolved DSL and Greedy-only.
+figure_09_evolved_minus_greedy.pdf,Marginal benefit over the greedy heuristic,Seed-level difference between Evolved DSL and Greedy-only.
+figure_10_outer_runtime_by_seed.png,Offline optimizer-design cost by seed,Wall-clock runtime of the outer evolutionary design process for each master seed.
+figure_10_outer_runtime_by_seed.pdf,Offline optimizer-design cost by seed,Wall-clock runtime of the outer evolutionary design process for each master seed.

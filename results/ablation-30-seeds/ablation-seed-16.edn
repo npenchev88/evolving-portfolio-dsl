@@ -1,0 +1,70 @@
+{:seed 16,
+ :programs
+ {:full
+  (optimizer
+   (mixed-population 35 15 return-per-cost)
+   random-removal-repair
+   (repeat-until-budget (inject-random 15))),
+  :no-greedy
+  (optimizer
+   (random-population 50)
+   random-removal-repair
+   (repeat-until-budget (inject-random 15))),
+  :simple-body
+  (optimizer
+   (mixed-population 35 15 return-per-cost)
+   random-removal-repair
+   (repeat-until-budget (inject-random 5)))},
+ :sizes
+ [{:full-minus-no-greedy 0.287860440188909,
+   :no-greedy-runtime-ms 10.3178403,
+   :full-minus-simple-body 0.0,
+   :simple-body-runtime-ms 10.690022299999999,
+   :full-gap 0.003312081522564855,
+   :seed 16,
+   :simple-body-gap 0.003312081522564855,
+   :full-score 0.9966879184774353,
+   :no-greedy-score 0.7088274782885263,
+   :no-greedy-gap 0.2911725217114737,
+   :full-runtime-ms 10.120270600000001,
+   :simple-body-score 0.9966879184774353,
+   :asset-count 50}
+  {:full-minus-no-greedy 0.3471791251263363,
+   :no-greedy-runtime-ms 27.141762200000006,
+   :full-minus-simple-body 0.0,
+   :simple-body-runtime-ms 25.770741800000003,
+   :full-gap 0.0017945725320128985,
+   :seed 16,
+   :simple-body-gap 0.0017945725320128985,
+   :full-score 0.9982054274679871,
+   :no-greedy-score 0.6510263023416508,
+   :no-greedy-gap 0.3489736976583492,
+   :full-runtime-ms 26.0487151,
+   :simple-body-score 0.9982054274679871,
+   :asset-count 100}
+  {:full-minus-no-greedy 0.39879600145482197,
+   :no-greedy-runtime-ms 108.72710070000001,
+   :full-minus-simple-body 0.0,
+   :simple-body-runtime-ms 105.9115586,
+   :full-gap 6.726317320745617E-4,
+   :seed 16,
+   :simple-body-gap 6.726317320745617E-4,
+   :full-score 0.9993273682679256,
+   :no-greedy-score 0.6005313668131036,
+   :no-greedy-gap 0.3994686331868965,
+   :full-runtime-ms 107.5126827,
+   :simple-body-score 0.9993273682679256,
+   :asset-count 250}
+  {:full-minus-no-greedy 0.4191479316476404,
+   :no-greedy-runtime-ms 383.37417690000007,
+   :full-minus-simple-body 0.0,
+   :simple-body-runtime-ms 359.970776,
+   :full-gap 3.253220235596878E-4,
+   :seed 16,
+   :simple-body-gap 3.253220235596878E-4,
+   :full-score 0.9996746779764404,
+   :no-greedy-score 0.5805267463288,
+   :no-greedy-gap 0.41947325367120003,
+   :full-runtime-ms 357.19280570000006,
+   :simple-body-score 0.9996746779764404,
+   :asset-count 500}]}

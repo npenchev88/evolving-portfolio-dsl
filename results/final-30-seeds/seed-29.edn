@@ -1,0 +1,334 @@
+{:seed 29,
+ :protocol
+ {:outer-config
+  {:outer-population-size 20,
+   :outer-generations 10,
+   :training-instance-count 10,
+   :inner-evaluation-budget 150,
+   :outer-tournament-size 3,
+   :dataset-config
+   {:train-instance-count 10,
+    :test-instance-count 10,
+    :asset-count 50},
+   :generator-config
+   {:scorer-scalars [0.1 0.2 0.5 1.0 2.0],
+    :greedy-counts [5 10 15 20],
+    :injection-counts [5 10 15 20],
+    :stagnation-thresholds [2 4 6 8],
+    :diversity-thresholds [0.1 0.2 0.3 0.5],
+    :budget-utilization-thresholds [0.7 0.8 0.9],
+    :max-depth 8,
+    :selection-counts [10 20 25 30],
+    :population-size 50},
+   :elite-count 1,
+   :parsimony-penalty-coefficient 5.0E-4,
+   :max-offspring-attempts 20000},
+  :scale-config
+  {:asset-counts [50 100 250 500],
+   :test-instance-count 10,
+   :evaluation-budget 150,
+   :base-test-data-seed 9898,
+   :random-search-config {:selection-probability 0.3},
+   :baseline-ga-config
+   {:population-size 50,
+    :tournament-size 2,
+    :crossover-probability 0.7,
+    :elite-count 1}}},
+ :outer
+ {:initial
+  {:fitness 0.9887878578832761,
+   :mean-training-score 0.995287857883276,
+   :minimum-training-score 0.9912790697674418,
+   :mean-training-gap 0.004712142116724016,
+   :node-count 13,
+   :depth 4,
+   :program
+   (optimizer
+    (mixed-population 35 15 return-per-cost)
+    ratio-repair
+    (repeat-until-budget (inject-random 20)))},
+  :final
+  {:fitness 0.9892129466592327,
+   :mean-training-score 0.9962129466592327,
+   :minimum-training-score 0.9941782355575459,
+   :mean-training-gap 0.0037870533407673816,
+   :node-count 14,
+   :depth 5,
+   :program
+   (optimizer
+    (mixed-population 35 15 return-per-cost)
+    ratio-repair
+    (repeat-until-budget (local-search (swap-assets))))},
+  :fitness-improvement 4.2508877595659467E-4,
+  :training-score-improvement 9.250887759566506E-4,
+  :node-reduction -1,
+  :depth-reduction -1,
+  :history
+  [{:best-program-depth 4,
+    :best-candidate-id 1,
+    :generation 0,
+    :unique-program-count 20,
+    :best-fitness 0.9887878578832761,
+    :best-mean-optimality-gap 0.004712142116724016,
+    :generation-runtime-ms 3169.838241,
+    :candidate-count 20,
+    :population-score-standard-deviation 0.09631368828052013,
+    :best-mean-normalized-score 0.995287857883276,
+    :best-program
+    (optimizer
+     (mixed-population 35 15 return-per-cost)
+     ratio-repair
+     (repeat-until-budget (inject-random 20))),
+    :best-program-node-count 13,
+    :best-minimum-normalized-score 0.9912790697674418,
+    :population-mean-normalized-score 0.8527600460103637}
+   {:best-program-depth 5,
+    :best-candidate-id 14,
+    :generation 1,
+    :unique-program-count 20,
+    :best-fitness 0.9892129466592327,
+    :best-mean-optimality-gap 0.0037870533407673816,
+    :generation-runtime-ms 3706.297484,
+    :candidate-count 20,
+    :population-score-standard-deviation 0.046137837029141454,
+    :best-mean-normalized-score 0.9962129466592327,
+    :best-program
+    (optimizer
+     (mixed-population 35 15 return-per-cost)
+     ratio-repair
+     (repeat-until-budget (local-search (swap-assets)))),
+    :best-program-node-count 14,
+    :best-minimum-normalized-score 0.9941782355575459,
+    :population-mean-normalized-score 0.9206675271571223}
+   {:best-program-depth 5,
+    :best-candidate-id 0,
+    :generation 2,
+    :unique-program-count 20,
+    :best-fitness 0.9892129466592327,
+    :best-mean-optimality-gap 0.0037870533407673816,
+    :generation-runtime-ms 2998.301669,
+    :candidate-count 20,
+    :population-score-standard-deviation 0.0890548684224762,
+    :best-mean-normalized-score 0.9962129466592327,
+    :best-program
+    (optimizer
+     (mixed-population 35 15 return-per-cost)
+     ratio-repair
+     (repeat-until-budget (local-search (swap-assets)))),
+    :best-program-node-count 14,
+    :best-minimum-normalized-score 0.9941782355575459,
+    :population-mean-normalized-score 0.9219119863077937}
+   {:best-program-depth 5,
+    :best-candidate-id 0,
+    :generation 3,
+    :unique-program-count 20,
+    :best-fitness 0.9892129466592327,
+    :best-mean-optimality-gap 0.0037870533407673816,
+    :generation-runtime-ms 2963.130978,
+    :candidate-count 20,
+    :population-score-standard-deviation 0.0968165931456103,
+    :best-mean-normalized-score 0.9962129466592327,
+    :best-program
+    (optimizer
+     (mixed-population 35 15 return-per-cost)
+     ratio-repair
+     (repeat-until-budget (local-search (swap-assets)))),
+    :best-program-node-count 14,
+    :best-minimum-normalized-score 0.9941782355575459,
+    :population-mean-normalized-score 0.9297157801252446}
+   {:best-program-depth 5,
+    :best-candidate-id 0,
+    :generation 4,
+    :unique-program-count 20,
+    :best-fitness 0.9892129466592327,
+    :best-mean-optimality-gap 0.0037870533407673816,
+    :generation-runtime-ms 3174.742902,
+    :candidate-count 20,
+    :population-score-standard-deviation 0.07363209218687415,
+    :best-mean-normalized-score 0.9962129466592327,
+    :best-program
+    (optimizer
+     (mixed-population 35 15 return-per-cost)
+     ratio-repair
+     (repeat-until-budget (local-search (swap-assets)))),
+    :best-program-node-count 14,
+    :best-minimum-normalized-score 0.9941782355575459,
+    :population-mean-normalized-score 0.9401562904096317}
+   {:best-program-depth 5,
+    :best-candidate-id 0,
+    :generation 5,
+    :unique-program-count 20,
+    :best-fitness 0.9892129466592327,
+    :best-mean-optimality-gap 0.0037870533407673816,
+    :generation-runtime-ms 2841.785158,
+    :candidate-count 20,
+    :population-score-standard-deviation 0.1061391499612981,
+    :best-mean-normalized-score 0.9962129466592327,
+    :best-program
+    (optimizer
+     (mixed-population 35 15 return-per-cost)
+     ratio-repair
+     (repeat-until-budget (local-search (swap-assets)))),
+    :best-program-node-count 14,
+    :best-minimum-normalized-score 0.9941782355575459,
+    :population-mean-normalized-score 0.9218410796335729}
+   {:best-program-depth 5,
+    :best-candidate-id 0,
+    :generation 6,
+    :unique-program-count 20,
+    :best-fitness 0.9892129466592327,
+    :best-mean-optimality-gap 0.0037870533407673816,
+    :generation-runtime-ms 3412.064838,
+    :candidate-count 20,
+    :population-score-standard-deviation 0.11196387622031674,
+    :best-mean-normalized-score 0.9962129466592327,
+    :best-program
+    (optimizer
+     (mixed-population 35 15 return-per-cost)
+     ratio-repair
+     (repeat-until-budget (local-search (swap-assets)))),
+    :best-program-node-count 14,
+    :best-minimum-normalized-score 0.9941782355575459,
+    :population-mean-normalized-score 0.9167793290998715}
+   {:best-program-depth 5,
+    :best-candidate-id 0,
+    :generation 7,
+    :unique-program-count 20,
+    :best-fitness 0.9892129466592327,
+    :best-mean-optimality-gap 0.0037870533407673816,
+    :generation-runtime-ms 3947.054739,
+    :candidate-count 20,
+    :population-score-standard-deviation 0.11340247021234975,
+    :best-mean-normalized-score 0.9962129466592327,
+    :best-program
+    (optimizer
+     (mixed-population 35 15 return-per-cost)
+     ratio-repair
+     (repeat-until-budget (local-search (swap-assets)))),
+    :best-program-node-count 14,
+    :best-minimum-normalized-score 0.9941782355575459,
+    :population-mean-normalized-score 0.908113161933135}
+   {:best-program-depth 5,
+    :best-candidate-id 0,
+    :generation 8,
+    :unique-program-count 20,
+    :best-fitness 0.9892129466592327,
+    :best-mean-optimality-gap 0.0037870533407673816,
+    :generation-runtime-ms 4378.553549,
+    :candidate-count 20,
+    :population-score-standard-deviation 0.08407183387906723,
+    :best-mean-normalized-score 0.9962129466592327,
+    :best-program
+    (optimizer
+     (mixed-population 35 15 return-per-cost)
+     ratio-repair
+     (repeat-until-budget (local-search (swap-assets)))),
+    :best-program-node-count 14,
+    :best-minimum-normalized-score 0.9941782355575459,
+    :population-mean-normalized-score 0.9464832803231819}
+   {:best-program-depth 5,
+    :best-candidate-id 0,
+    :generation 9,
+    :unique-program-count 20,
+    :best-fitness 0.9892129466592327,
+    :best-mean-optimality-gap 0.0037870533407673816,
+    :generation-runtime-ms 4613.957162,
+    :candidate-count 20,
+    :population-score-standard-deviation 0.08249571881282702,
+    :best-mean-normalized-score 0.9962129466592327,
+    :best-program
+    (optimizer
+     (mixed-population 35 15 return-per-cost)
+     ratio-repair
+     (repeat-until-budget (local-search (swap-assets)))),
+    :best-program-node-count 14,
+    :best-minimum-normalized-score 0.9941782355575459,
+    :population-mean-normalized-score 0.9630995078909305}
+   {:best-program-depth 5,
+    :best-candidate-id 0,
+    :generation 10,
+    :unique-program-count 20,
+    :best-fitness 0.9892129466592327,
+    :best-mean-optimality-gap 0.0037870533407673816,
+    :generation-runtime-ms 5192.596147,
+    :candidate-count 20,
+    :population-score-standard-deviation 0.07404465624931156,
+    :best-mean-normalized-score 0.9962129466592327,
+    :best-program
+    (optimizer
+     (mixed-population 35 15 return-per-cost)
+     ratio-repair
+     (repeat-until-budget (local-search (swap-assets)))),
+    :best-program-node-count 14,
+    :best-minimum-normalized-score 0.9941782355575459,
+    :population-mean-normalized-score 0.9583028042062782}],
+  :outer-runtime-ms 40469.00251},
+ :sizes
+ [{:random-mean-gap 0.24377011078662444,
+   :final-dsl-mean-runtime-ms 12.0626455,
+   :final-minus-ga 0.10891211694564351,
+   :initial-dsl-mean-runtime-ms 12.743716800000001,
+   :ga-mean-score 0.8878970392085641,
+   :random-mean-score 0.7562298892133756,
+   :initial-dsl-mean-score 0.9966879184774353,
+   :final-minus-initial 1.2123767677230113E-4,
+   :seed 29,
+   :final-dsl-mean-score 0.9968091561542076,
+   :asset-count 50,
+   :initial-dsl-mean-gap 0.003312081522564855,
+   :final-dsl-mean-gap 0.0031908438457924444,
+   :ga-mean-runtime-ms 11.2509622,
+   :random-mean-runtime-ms 8.9960235,
+   :ga-mean-gap 0.112102960791436,
+   :final-minus-random 0.24057926694083198}
+  {:random-mean-gap 0.3095904241929551,
+   :final-dsl-mean-runtime-ms 23.6244176,
+   :final-minus-ga 0.1334861693516355,
+   :initial-dsl-mean-runtime-ms 26.6627204,
+   :ga-mean-score 0.8647192581163516,
+   :random-mean-score 0.6904095758070449,
+   :initial-dsl-mean-score 0.9982054274679871,
+   :final-minus-initial 0.0,
+   :seed 29,
+   :final-dsl-mean-score 0.9982054274679871,
+   :asset-count 100,
+   :initial-dsl-mean-gap 0.0017945725320128985,
+   :final-dsl-mean-gap 0.0017945725320128985,
+   :ga-mean-runtime-ms 22.63544,
+   :random-mean-runtime-ms 18.439304,
+   :ga-mean-gap 0.13528074188364841,
+   :final-minus-random 0.30779585166094225}
+  {:random-mean-gap 0.36229398758062786,
+   :final-dsl-mean-runtime-ms 68.12701560000001,
+   :final-minus-ga 0.18476592102455103,
+   :initial-dsl-mean-runtime-ms 77.9364896,
+   :ga-mean-score 0.8145614472433745,
+   :random-mean-score 0.6377060124193721,
+   :initial-dsl-mean-score 0.9993273682679256,
+   :final-minus-initial 0.0,
+   :seed 29,
+   :final-dsl-mean-score 0.9993273682679256,
+   :asset-count 250,
+   :initial-dsl-mean-gap 6.726317320745617E-4,
+   :final-dsl-mean-gap 6.726317320745617E-4,
+   :ga-mean-runtime-ms 64.20865920000001,
+   :random-mean-runtime-ms 52.31222429999999,
+   :ga-mean-gap 0.18543855275662546,
+   :final-minus-random 0.3616213558485535}
+  {:random-mean-gap 0.3948424514316969,
+   :final-dsl-mean-runtime-ms 140.3578674,
+   :final-minus-ga 0.20991263317551412,
+   :initial-dsl-mean-runtime-ms 156.4747341,
+   :ga-mean-score 0.7897620448009263,
+   :random-mean-score 0.6051575485683032,
+   :initial-dsl-mean-score 0.9996746779764404,
+   :final-minus-initial 0.0,
+   :seed 29,
+   :final-dsl-mean-score 0.9996746779764404,
+   :asset-count 500,
+   :initial-dsl-mean-gap 3.253220235596878E-4,
+   :final-dsl-mean-gap 3.253220235596878E-4,
+   :ga-mean-runtime-ms 132.60806350000001,
+   :random-mean-runtime-ms 107.2484455,
+   :ga-mean-gap 0.21023795519907376,
+   :final-minus-random 0.3945171294081372}]}

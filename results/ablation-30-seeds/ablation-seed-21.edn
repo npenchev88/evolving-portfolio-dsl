@@ -1,0 +1,70 @@
+{:seed 21,
+ :programs
+ {:full
+  (optimizer
+   (mixed-population 45 5 return-per-cost)
+   random-removal-repair
+   (repeat-until-budget (local-search (swap-assets)))),
+  :no-greedy
+  (optimizer
+   (random-population 50)
+   random-removal-repair
+   (repeat-until-budget (local-search (swap-assets)))),
+  :simple-body
+  (optimizer
+   (mixed-population 45 5 return-per-cost)
+   random-removal-repair
+   (repeat-until-budget (inject-random 5)))},
+ :sizes
+ [{:full-minus-no-greedy 0.3075408854012762,
+   :no-greedy-runtime-ms 7.553835899999998,
+   :full-minus-simple-body 0.0,
+   :simple-body-runtime-ms 10.43595,
+   :full-gap 0.003312081522564855,
+   :seed 21,
+   :simple-body-gap 0.003312081522564855,
+   :full-score 0.9966879184774353,
+   :no-greedy-score 0.6891470330761591,
+   :no-greedy-gap 0.31085296692384096,
+   :full-runtime-ms 7.951108700000001,
+   :simple-body-score 0.9966879184774353,
+   :asset-count 50}
+  {:full-minus-no-greedy 0.3490249678218693,
+   :no-greedy-runtime-ms 17.856963,
+   :full-minus-simple-body 0.0,
+   :simple-body-runtime-ms 25.9637136,
+   :full-gap 0.0017945725320128985,
+   :seed 21,
+   :simple-body-gap 0.0017945725320128985,
+   :full-score 0.9982054274679871,
+   :no-greedy-score 0.6491804596461178,
+   :no-greedy-gap 0.3508195403538823,
+   :full-runtime-ms 17.2636482,
+   :simple-body-score 0.9982054274679871,
+   :asset-count 100}
+  {:full-minus-no-greedy 0.4121179311038772,
+   :no-greedy-runtime-ms 53.7904633,
+   :full-minus-simple-body 0.0,
+   :simple-body-runtime-ms 111.34567609999999,
+   :full-gap 6.726317320745617E-4,
+   :seed 21,
+   :simple-body-gap 6.726317320745617E-4,
+   :full-score 0.9993273682679256,
+   :no-greedy-score 0.5872094371640484,
+   :no-greedy-gap 0.41279056283595156,
+   :full-runtime-ms 53.25988589999999,
+   :simple-body-score 0.9993273682679256,
+   :asset-count 250}
+  {:full-minus-no-greedy 0.42752635219492796,
+   :no-greedy-runtime-ms 160.990872,
+   :full-minus-simple-body 0.0,
+   :simple-body-runtime-ms 375.3601588,
+   :full-gap 3.253220235596878E-4,
+   :seed 21,
+   :simple-body-gap 3.253220235596878E-4,
+   :full-score 0.9996746779764404,
+   :no-greedy-score 0.5721483257815124,
+   :no-greedy-gap 0.4278516742184877,
+   :full-runtime-ms 154.21712439999996,
+   :simple-body-score 0.9996746779764404,
+   :asset-count 500}]}
